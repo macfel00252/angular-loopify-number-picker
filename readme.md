@@ -10,7 +10,7 @@ Run `gulp --production` for minifying and uglifying scripts and styles.
 
 ## Install
 
-Include Angular and [doughnutchart.min.js](https://raw.githubusercontent.com/WebCodium/angular-doughnut-chart/master/dist/js/doughnutchart.min.js) or [doughnutchart.js](https://raw.githubusercontent.com/WebCodium/angular-doughnut-chart/master/dist/js/doughnutchart.js) in your page. You can use bower:
+Include Angular and [doughnutchart.min.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicker.min.js) or [doughnutchart.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicker.js) in your page. You can use bower:
 
 `bower install angular-doughnut-chart`
 
