@@ -32,7 +32,7 @@ angular
                 enter: false,
                 percent: false,
                 label: undefined,
-                methodRound: false
+                methodRound: undefined
             },
             service = {
                 index: 0,
