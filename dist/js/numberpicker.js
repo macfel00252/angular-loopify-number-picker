@@ -178,4 +178,3 @@ angular
             templateUrl: 'template/loopify/numberpicker.html'
         });
     }]);
-//# sourceMappingURL=numberpicker.js.map
