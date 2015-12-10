@@ -6,21 +6,19 @@ You need run `gulp` every time if you want to look for (watch) the project.
 
 You need run `gulp server` if you want to run a demo of plugin in your browser.
 
-Run `gulp --production` for minifying and uglifying scripts and styles.
+Run `gulp --production` for minifying and uglifying scripts.
 
 ## Install
 
 Include Angular and [numberpicker.min.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicker.min.js) or [numberpicker.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicker.js) in your page. You can use bower:
 
-`bower install angular-doughnut-chart`
+`bower install angular-loopify-number-picker`
 
-Add `angular-svg-round-progress` to your app's module dependencies:
+Add `angular-loopify-number-picker` to your app's module dependencies:
 
 ```javascript
-angular.module('someModule', ['angular-doughnut-chart'])
+angular.module('someModule', ['angular-loopify-number-picker'])
 ```
-
-Iclude [doughnutchart.min.css](https://raw.githubusercontent.com/WebCodium/angular-doughnut-chart/master/dist/css/doughnutchart.min.css) or [doughnutchart.css](https://raw.githubusercontent.com/WebCodium/angular-doughnut-chart/master/dist/css/doughnutchart.css) stylesheet in your page.
 
 ## UI dependency(optional)
 - [bootstrap](http://getbootstrap.com) (3.3.5+)
