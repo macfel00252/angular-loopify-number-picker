@@ -11,41 +11,40 @@
     </style>
 </head>
 <body ng-controller="demoController" style="padding: 10px 20px;">
-<div class="row">
-    <h4>Number picker with percentage</h4>
+<h4>Number picker with percentage</h4>
 
-    <p>Current value is
-        <mark>{{curValue}}</mark>
-        step is
-        <mark>5</mark>
-        min is
-        <mark>0</mark>
-        max is
-        <mark>50</mark>
-    </p>
-    <loopify-number-picker value="curValue" step="5" min="0" max="50" label="hours"
-                           percent="true"></loopify-number-picker>
-    <h4>Number picker without percentage</h4>
+<p>Current value is
+    <mark>{{curValue}}</mark>
+    step is
+    <mark>5</mark>
+    min is
+    <mark>0</mark>
+    max is
+    <mark>50</mark>
+</p>
+<loopify-number-picker value="curValue" step="5" min="0" max="50" label="hours"
+                       percent="true"></loopify-number-picker>
+<h4>Number picker without percentage</h4>
 
-    <p>Current value is
-        <mark>{{curValue2}}</mark>
-        step is
-        <mark>2</mark>
-        min is
-        <mark>0</mark>
-        max is
-        <mark>100</mark>
-    </p>
-    <loopify-number-picker value="curValue2" step="2" min="0" max="100" label="kg"></loopify-number-picker>
+<p>Current value is
+    <mark>{{curValue2}}</mark>
+    step is
+    <mark>2</mark>
+    min is
+    <mark>0</mark>
+    max is
+    <mark>100</mark>
+</p>
+<loopify-number-picker value="curValue2" step="2" min="0" max="100" label="kg"></loopify-number-picker>
 
-    <script src="/bower_components/angular/angular.js"></script>
-    <script src="./dist/js/numberpicker.js"></script>
-    <script>
-        angular.module('demo', ['angular-loopify-number-picker']).controller('demoController', ['$scope', '$http', '$log', '$interval', function ($scope, $http, $log, $interval) {
-            'use strict';
-            $scope.curValue = 10;
-            $scope.curValue2 = 0;
-        }]);
-    </script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="./dist/js/numberpicker.js"></script>
+<script>
+    angular.module('demo', ['angular-loopify-number-picker']).controller('demoController', ['$scope', function ($scope) {
+        'use strict';
+        $scope.curValue = 10;
+        $scope.curValue2 = 0;
+    }]);
+</script>
 </body>
 </html>

@@ -44,4 +44,7 @@ angular.module('someModule', ['angular-loopify-number-picker'])
 </loopify-number-picker>
 ```
 
+### Demo
+[See demo](http://codepen.io/anon/pen/MKwQYE)
+
 Author: yura.l@webcodium.com
