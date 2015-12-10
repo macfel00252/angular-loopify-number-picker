@@ -1,4 +1,4 @@
-# Doughnut chart
+# Number picker
 
 Before you run `gulp` command in console you need run `npm install` and `bower install`.
 
