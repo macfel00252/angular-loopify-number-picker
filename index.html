@@ -39,7 +39,7 @@
 <script src="/bower_components/angular/angular.js"></script>
 <script src="./dist/js/numberpicker.js"></script>
 <script>
-    angular.module('demo', ['angular-loopify-number-picker']).controller('demoController', ['$scope', '$interval', function ($scope, $interval) {
+    angular.module('demo', ['angular-loopify-number-picker']).controller('demoController', ['$scope', function ($scope) {
         'use strict';
         $scope.curValue = 10;
         $scope.min = 0;
