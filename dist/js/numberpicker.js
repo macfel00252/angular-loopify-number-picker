@@ -37,18 +37,11 @@ angular
             service = {
                 index: 0,
                 assignExtend: function (dest, src) {
-                    var o = {};
-
-                    for (var key in src) {
-                        if (dest[key]) {
-                            o[key] = dest[key];
-                        }
-                        else {
-                            o[key] = src[key];
-                            dest[key] = src[key];
+                    for (var i in src) {
+                        if (dest[i] === undefined) {
+                            dest[i] = src[i];
                         }
                     }
-                    return o;
                 },
                 isNumber: function (value) {
                     var val = Number(value);
@@ -57,13 +50,14 @@ angular
                 toNumber: function (value) {
                     return Number(value);
                 },
-                checkNumber: function (value) {
+                checkNumber: function (value, scope) {
                     var self = this,
                     //count no numbers
                         cnn = 0;
 
                     if (angular.isArray(value)) {
                         angular.forEach(value, function (v) {
+                            v = scope ? scope[v] : v;
                             if (!self.isNumber(v)) {
                                 cnn++;
                             }
@@ -74,15 +68,11 @@ angular
                         return true;
                     }
                     else {
+                        value = scope ? scope[value] : value;
                         if (!this.isNumber(value)) {
                             return false;
                         }
                         return true;
-                    }
-                },
-                transform: function (opts) {
-                    for (var key in opts) {
-                        opts[key] = this.toNumber(opts[key]);
                     }
                 },
                 getId: function () {
@@ -93,9 +83,9 @@ angular
                 restrict: 'E',
                 scope: {
                     'value': '=',
-                    'min': '@',
-                    'max': '@',
-                    'step': '@',
+                    'min': '=',
+                    'max': '=',
+                    'step': '=',
                     'enter': '@',
                     'percent': '@',
                     'label': '@',
@@ -104,9 +94,10 @@ angular
             };
         return angular.extend(base, {
             //check if number
-            link: function (scope, element) {
-                var opts = service.assignExtend(scope, config);
-                if (!service.checkNumber([opts.min, opts.max, opts.step])) {
+            link: function (scope) {
+                var numbers = ['value', 'min', 'max', 'step'];
+                service.assignExtend(scope, config);
+                if (!service.checkNumber(numbers, scope)) {
                     throw new Error('some value: (min, max or step) is not a valid number');
                 }
 
@@ -120,25 +111,32 @@ angular
 
                 scope.id = service.getId();
 
-                //transform string to number
-                service.transform(opts);
-
-                //check if current value on start is not bigger than min value
-                if (opts.min > scope.value) {
-                    scope.value = opts.min;
+                //check if current value on start is not less than min value and not bigger than max value
+                scope.checkEdge = function () {
+                    if (scope.min > scope.value) {
+                        scope.value = scope.min;
+                    }
+                    if (scope.max < scope.value) {
+                        scope.value = scope.max;
+                    }
                 }
+                scope.checkEdge();
 
                 scope.incrementValue = function () {
-                    if (scope.value >= (scope.isPercent ? 100 : opts.max)) {
+                    if (scope.value >= (scope.isPercent ? 100 : scope.max)) {
                         return;
                     }
-                    scope.value += opts.step;
+
+                    scope.value += +scope.step;
+                    watchValue(scope.value);
                 };
                 scope.decrementValue = function () {
-                    if (scope.value <= (scope.isPercent ? 0 : opts.min)) {
+                    if (scope.value <= (scope.isPercent ? 0 : scope.min)) {
                         return;
                     }
-                    scope.value -= opts.step;
+
+                    scope.value -= +scope.step;
+                    watchValue(scope.value);
                 };
                 scope.togglePercentageValue = function () {
                     scope.isPercent = !scope.isPercent;
@@ -150,21 +148,22 @@ angular
                     }
                 };
 
-                //watch for disabled buttons
-                scope.$watch('value', function (newValue, oldValue) {
-                    var min = scope.isPercent ? 0 : opts.min,
-                        max = scope.isPercent ? 100 : opts.max;
+                function watchValue(newValue) {
+                    var min = scope.isPercent ? 0 : scope.min,
+                        max = scope.isPercent ? 100 : scope.max;
 
-                    scope.canDown = newValue > min;
-                    scope.canUp = newValue < max;
+                    scope.canDown = newValue > min && +newValue - (+scope.step) >= min;
+                    scope.canUp = newValue < max && +newValue + (+scope.step) <= max;
+
                     scope.isMaxValue = !scope.canUp;
                     scope.isMinValue = !scope.canDown;
 
                     if (!service.checkNumber(newValue) || newValue > max || newValue < min) {
                         //set oldValue or min value if oldValue isn't number when newValue isn't a number or newValue more than max or newValue less than min
-                        scope.value = service.checkNumber(oldValue) ? oldValue : opts.min;
+                        scope.value = service.checkNumber(scope.oldValue) ? scope.oldValue : scope.min;
                     }
-                });
+                    scope.oldValue = newValue;
+                }
 
                 scope.$watch('percentLabel', function () {
                     if (scope.isPercent) {
@@ -173,6 +172,10 @@ angular
                     else {
                         scope.value = scope.methodRound ? Math[scope.methodRound](scope.max * scope.value / 100) : scope.max * scope.value / 100;
                     }
+                });
+                scope.$watchGroup(numbers, function () {
+                    scope.checkEdge();
+                    watchValue(scope.value);
                 });
             },
             templateUrl: 'template/loopify/numberpicker.html'
