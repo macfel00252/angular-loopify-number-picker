@@ -36,7 +36,6 @@
     <mark>{{max2}}</mark>
 </p>
 <loopify-number-picker value="curValue2" step="step2" min="min2" max="max2" label="kg"></loopify-number-picker>
-<button class="btn btn-danger" ng-click="click()">click</button>
 <script src="/bower_components/angular/angular.js"></script>
 <script src="./dist/js/numberpicker.js"></script>
 <script>
@@ -51,9 +50,6 @@
         $scope.min2 = 0;
         $scope.max2 = 100;
         $scope.step2 = 2;
-        $scope.click = function() {
-            $scope.min2 = Math.floor(Math.random() * 10);
-        };
     }]);
 </script>
 </body>
