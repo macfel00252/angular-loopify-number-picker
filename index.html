@@ -16,34 +16,40 @@
 <p>Current value is
     <mark>{{curValue}}</mark>
     step is
-    <mark>5</mark>
+    <mark>{{step}}</mark>
     min is
-    <mark>0</mark>
+    <mark>{{min}}</mark>
     max is
-    <mark>50</mark>
+    <mark>{{max}}</mark>
 </p>
-<loopify-number-picker value="curValue" step="5" min="0" max="50" label="hours"
+<loopify-number-picker value="curValue" step="step" min="min" max="max" label="hours"
                        percent="true"></loopify-number-picker>
 <h4>Number picker without percentage</h4>
 
 <p>Current value is
     <mark>{{curValue2}}</mark>
     step is
-    <mark>2</mark>
+    <mark>{{step2}}</mark>
     min is
-    <mark>0</mark>
+    <mark>{{min2}}</mark>
     max is
-    <mark>100</mark>
+    <mark>{{max2}}</mark>
 </p>
-<loopify-number-picker value="curValue2" step="2" min="0" max="100" label="kg"></loopify-number-picker>
-
+<loopify-number-picker value="curValue2" step="step2" min="min2" max="max2" label="kg"></loopify-number-picker>
 <script src="/bower_components/angular/angular.js"></script>
 <script src="./dist/js/numberpicker.js"></script>
 <script>
     angular.module('demo', ['angular-loopify-number-picker']).controller('demoController', ['$scope', function ($scope) {
         'use strict';
         $scope.curValue = 10;
+        $scope.min = 0;
+        $scope.max = 50;
+        $scope.step = 5;
+
         $scope.curValue2 = 0;
+        $scope.min2 = 0;
+        $scope.max2 = 100;
+        $scope.step2 = 2;
     }]);
 </script>
 </body>

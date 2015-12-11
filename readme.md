@@ -1,16 +1,16 @@
 # Number picker
 
-Before you run `gulp` command in console you need run `npm install` and `bower install`.
+You should run `npm install` and `bower install` console commands before runing `gulp` command.
 
-You need run `gulp` every time if you want to look for (watch) the project.
+You should run `gulp` every time you want to work on the project.
 
-You need run `gulp server` if you want to run a demo of plugin in your browser.
+You should run `gulp server` if you want to run a demo of plugin in your browser.
 
-Run `gulp --production` for minifying and uglifying scripts.
+Run `gulp --production` to minify and uglify scripts.
 
 ## Install
 
-Include Angular and [numberpicker.min.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicker.min.js) or [numberpicker.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicker.js) in your page. You can use bower:
+Include Angular and [numberpicker.min.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicke...) or [numberpicker.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicke...) in your page. You can use bower:
 
 `bower install angular-loopify-number-picker`
 
