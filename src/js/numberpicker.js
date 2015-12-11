@@ -101,7 +101,7 @@ angular
             };
         return angular.extend(base, {
             //check if number
-            link: function (scope, element) {
+            link: function (scope) {
                 var opts = service.assignExtend(scope, config);
                 if (!service.checkNumber([opts.min, opts.max, opts.step])) {
                     throw new Error('some value: (min, max or step) is not a valid number');
