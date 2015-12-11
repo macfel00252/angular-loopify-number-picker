@@ -42,8 +42,7 @@ angular
                     for (var key in src) {
                         if (dest[key]) {
                             o[key] = dest[key];
-                        }
-                        else {
+                        } else {
                             o[key] = src[key];
                             dest[key] = src[key];
                         }
@@ -52,7 +51,7 @@ angular
                 },
                 isNumber: function (value) {
                     var val = Number(value);
-                    return !isNaN(val) && val == value;
+                    return !isNaN(val) && val === +value;
                 },
                 toNumber: function (value) {
                     return Number(value);
@@ -73,12 +72,10 @@ angular
                         }
                         return true;
                     }
-                    else {
-                        if (!this.isNumber(value)) {
-                            return false;
-                        }
-                        return true;
+                    if (!this.isNumber(value)) {
+                        return false;
                     }
+                    return true;
                 },
                 transform: function (opts) {
                     for (var key in opts) {
@@ -144,8 +141,7 @@ angular
                     scope.isPercent = !scope.isPercent;
                     if (scope.isPercent) {
                         scope.percentLabel = '%';
-                    }
-                    else {
+                    } else {
                         scope.percentLabel = scope.label;
                     }
                 };
@@ -169,8 +165,7 @@ angular
                 scope.$watch('percentLabel', function () {
                     if (scope.isPercent) {
                         scope.value = scope.methodRound ? Math[scope.methodRound](scope.value / scope.max * 100) : scope.value / scope.max * 100;
-                    }
-                    else {
+                    } else {
                         scope.value = scope.methodRound ? Math[scope.methodRound](scope.max * scope.value / 100) : scope.max * scope.value / 100;
                     }
                 });
