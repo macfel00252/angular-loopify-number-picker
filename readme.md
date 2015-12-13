@@ -10,7 +10,7 @@ Run `gulp --production` to minify and uglify scripts.
 
 ## Install
 
-Include Angular and [numberpicker.min.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicke...) or [numberpicker.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/js/numberpicke...) in your page. You can use bower:
+Include Angular and [numberpicker.min.js](https://github.com/WebCodium/angular-loopify-number-picker/blob/master/dist/js/numberpicker.min.js) or [numberpicker.js](https://github.com/WebCodium/angular-loopify-number-picker/blob/master/dist/js/numberpicker.js) in your page. You can use bower:
 
 `bower install angular-loopify-number-picker`
 
