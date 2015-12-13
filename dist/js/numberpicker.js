@@ -109,9 +109,6 @@ angular
 
                 if (scope.percent) {
                     scope.percentLabel = '%';
-                }
-
-                if (scope.percent) {
                     scope.isPercent = true;
                 }
 
@@ -120,9 +117,13 @@ angular
                 //transform string to number
                 service.transform(opts);
 
-                //check if current value on start is not bigger than min value
+                //change current value if min value is bigger
                 if (opts.min > scope.value) {
                     scope.value = opts.min;
+                }
+                //change current value if max value is small
+                if (opts.max < scope.value) {
+                    scope.value = opts.max;
                 }
 
                 scope.incrementValue = function () {
@@ -162,7 +163,9 @@ angular
                     }
                 });
 
-                scope.$watch('percentLabel', function () {
+                scope.$watch('percentLabel', function (newValue, oldValue) {
+                    if (!newValue && !oldValue)
+                        return false;
                     if (scope.isPercent) {
                         scope.value = scope.methodRound ? Math[scope.methodRound](scope.value / scope.max * 100) : scope.value / scope.max * 100;
                     } else {
