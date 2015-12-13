@@ -64,7 +64,7 @@ angular
                     if (angular.isArray(value)) {
                         angular.forEach(value, function (v) {
                             if (!self.isNumber(v)) {
-                                cnn++;
+                                cnn += 1;
                             }
                         });
                         if (cnn > 0) {
@@ -83,7 +83,8 @@ angular
                     }
                 },
                 getId: function () {
-                    return 'number-picker-' + (++this.index);
+                    this.index += 1;
+                    return 'number-picker-' + this.index;
                 }
             },
             base = {
