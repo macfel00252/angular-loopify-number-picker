@@ -10,10 +10,10 @@
                ng-readonly="enter" id="{{id}}">
 
         <div class="loopify-frame-percent-label" ng-if="label">
-            <button type="button" class="btn btn-gray text-center" ng-click="togglePercentageValue()"
+            <button type="button" class="btn btn-gray text-center loopify-toggle-percentage" ng-click="togglePercentageValue()"
                     ng-if="percent">{{percentLabel}}
             </button>
-            <label for="{{id}}" class="control-label" ng-if="!percent">{{label}}</label>
+            <label for="{{id}}" class="control-label loopify-label" ng-if="!percent">{{label}}</label>
         </div>
     </div>
     <div class="text-center">
