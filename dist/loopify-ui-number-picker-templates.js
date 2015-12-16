@@ -1,0 +1,6 @@
+(function() {
+'use strict';
+
+angular.module("loopify.ui.numberPicker.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("templates/numberPicker.html","<div class=\"loopify-number-picker\" ng-class=\"{\'has-max\': isMaxValue, \'has-min\': isMinValue}\"><div class=\"text-center\"><a ng-click=\"incrementValue()\" ng-class=\"{disabled: !canUp}\" class=\"btn btn-link\" ng-disabled=\"!canUp\"><span class=\"glyphicon glyphicon-chevron-up\"></span></a></div><div class=\"loopify-frame-controls\"><input type=\"text\" ng-model=\"value\" class=\"form-control text-center pull-left\" ng-disabled=\"disabled\" ng-readonly=\"enter\" id=\"{{id}}\"><div class=\"loopify-frame-percent-label\" ng-if=\"label\"><button type=\"button\" class=\"btn btn-gray text-center\" ng-click=\"togglePercentageValue()\" ng-if=\"percent\">{{percentLabel}}</button> <label for=\"{{id}}\" class=\"control-label\" ng-if=\"!percent\">{{label}}</label></div></div><div class=\"text-center\"><a ng-click=\"decrementValue()\" ng-class=\"{disabled: !canDown}\" class=\"btn btn-link\" ng-disabled=\"!canDown\"><span class=\"glyphicon glyphicon-chevron-down\"></span></a></div></div>");}]);
+
+})();

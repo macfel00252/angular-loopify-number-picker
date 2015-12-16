@@ -1,0 +1,16 @@
+.loopify-number-picker {
+  width: 70px;
+  .loopify-frame-controls {
+    position: relative;
+  }
+  .loopify-frame-percent-label {
+    position: absolute;
+    left: 100%;
+    top: 0;
+  }
+  .loopify-label {
+    position: relative;
+    top: 5px;
+    left: 2px;
+  }
+}

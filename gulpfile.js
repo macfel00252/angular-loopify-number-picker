@@ -1,114 +1,95 @@
-var gulp = require('gulp'),
-    $ = require('gulp-load-plugins')(),
-    del = require('del'),
-    Q = require('q');
+var gulp = require('gulp');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var sh = require('shelljs');
+var jshint = require('gulp-jshint');
+var wrap = require('gulp-wrap');
+var minifyHtml = require('gulp-minify-html');
+var templateCache = require('gulp-angular-templatecache');
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
+var sass = require('gulp-sass');
+var minifyCss = require('gulp-minify-css');
 
-var config = {
-    production: !!$.util.env.production,
-    sourceMaps: !$.util.env.production
-}
+var packageName = 'loopify-ui-number-picker';
 
-// MAIN PATHS
-var paths = {
-    scripts: 'src/js/'
-}
+gulp.task('default', ['lint-js', 'style', 'scripts', 'templates']);
 
-// BUILD TARGET CONFIG
-var build = {
-    scripts: 'dist/js'
-};
+gulp.task('lint-js', function() {
+    gulp.src('src/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+});
 
-// SOURCES CONFIG
-var source = {
-    scripts: [
-        paths.scripts + '*.js'
-    ]
-};
+gulp.task('scripts', function(done) {
+    gulp.src('src/**/*.js')
+        .pipe(concat(packageName + '.js'))
+        .pipe(wrap('(function() {\n\'use strict\';\n\n<%= contents %>\n\n})();'))
+        .pipe(gulp.dest('./dist/'))
+        .pipe(uglify({
+            compress: {
+                pure_funcs: ['console.log']
+            }
+        }))
+        .pipe(rename({ extname: '.min.js' }))
+        .pipe(gulp.dest('./dist/'))
+        .on('end', done);
+});
 
-var app = {};
+gulp.task('style', function(done) {
+    gulp.src('src/**/*.scss')
+        .pipe(sass())
+        .pipe(concat(packageName + '.css'))
+        .pipe(minifyCss())
+        .pipe(rename({ extname: '.min.css' }))
+        .pipe(gulp.dest('./dist/'))
+        .on('end', done);
+});
 
-app.addScript = function (paths, outputFilename) {
-    return gulp.src(paths)
-        .pipe($.plumber())
-        .pipe($.if(config.sourceMaps, $.sourcemaps.init()))
-        .pipe(gulp.dest(build.scripts))
-        //jslint - problems only with no defined angular varaible
-        //.pipe($.jslint())
-        .pipe(config.production ? $.uglify() : $.util.noop())
-        .pipe($.if(config.production, $.rename({extname: '.min.js'})))
-        .pipe($.if(config.sourceMaps, $.sourcemaps.write('.')))
-        .pipe(gulp.dest(build.scripts));
-};
+gulp.task('templates', function() {
+    gulp.src('src/**/*.html')
+        .pipe(minifyHtml({
+            empty: true,
+            spare: true,
+            quotes: true
+        }))
+        .pipe(templateCache({module: 'loopify.ui.numberPicker.templates', standalone: true}))
+        .pipe(wrap('(function() {\n\'use strict\';\n\n<%= contents %>\n\n})();'))
+        .pipe(rename(packageName + '-templates.js'))
+        .pipe(gulp.dest('dist'));
+});
 
-// Error handler
-app.handleError = function (err) {
-    app.log(err.toString());
-    this.emit('end');
-}
-
-// log to console using
-app.log = function log(msg) {
-    $.util.log($.util.colors.blue(msg));
-}
-
-var Pipeline = function () {
-    this.entries = [];
-};
-Pipeline.prototype.add = function () {
-    this.entries.push(arguments);
-};
-Pipeline.prototype.run = function (callable) {
-    var deferred = Q.defer();
-    var i = 0;
-    var entries = this.entries;
-    var runNextEntry = function () {
-        // see if we're all done looping
-        if (typeof entries[i] === 'undefined') {
-            deferred.resolve();
-            return;
+gulp.task('serve', function() {
+    browserSync({
+        notify: false,
+        port: 1337,
+        server: {
+            baseDir: '.',
+            index: 'index.html',
+            routes: {
+                '/bower_components': 'bower_components',
+                '/dist': 'dist'
+            }
         }
-        // pass app as this, though we should avoid using "this"
-        // in those functions anyways
-        callable.apply(app, entries[i]).on('end', function () {
-            i++;
-            runNextEntry();
-        });
-    };
-    runNextEntry();
-    return deferred.promise;
-};
+    });
 
-gulp.task('scripts', function () {
-    var pipeline = new Pipeline();
+    gulp.watch([
+        'dist/**/*',
+        'index.html'
+    ]).on('change', reload);
 
-    pipeline.add(source.scripts);
+    gulp.watch([
+        'gulpfile.js',
+        'src/**/*.js'
+    ], ['scripts']);
 
-    return pipeline.run(app.addScript);
+    gulp.watch([
+        'gulpfile.js',
+        'style/**/*.css'
+    ], ['style']);
+
+    gulp.watch([
+        'src/**/*.html'
+    ], ['templates']);
 });
-
-gulp.task('clean', function () {
-    del.sync(build.scripts);
-});
-
-gulp.task('watch', function () {
-    app.log('Starting watch');
-
-    gulp.watch(source.scripts, ['scripts']);
-});
-
-gulp.task('server', function () {
-    gulp.src('.')
-        .pipe($.serverLivereload({
-            livereload: true,
-            open: true
-        }));
-});
-
-gulp.task('assets', ['scripts']);
-
-var tasks = ['clean', 'assets'];
-if (!config.production) {
-    tasks.push('watch');
-}
-
-gulp.task('default', tasks);
