@@ -8,7 +8,7 @@ You should run `gulp` if you want to build a project.
 
 ## Install
 
-Include Angular and [loopify-ui-number-picker.min.js](https://github.com/WebCodium/angular-loopify-number-picker/blob/master/dist/js/loopify-ui-number-picker.min.js) or [loopify-ui-number-picker.js](https://github.com/WebCodium/angular-loopify-number-picker/blob/master/dist/js/loopify-ui-number-picker.js) in your page. You can use bower:
+Include Angular and [loopify-ui-number-picker.min.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/loopify-ui-number-picker.min.js) or [loopify-ui-number-picker.js](https://raw.githubusercontent.com/WebCodium/angular-loopify-number-picker/master/dist/loopify-ui-number-picker.js) in your page. You can use bower:
 
 `bower install angular-loopify-number-picker`
 
