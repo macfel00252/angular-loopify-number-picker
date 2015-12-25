@@ -62,14 +62,15 @@ module
                     if (scope.value >= (scope.isPercent ? 100 : opts.max)) {
                         return;
                     }
-                    scope.value += opts.step;
+                    scope.value = +scope.value + opts.step;
                 };
                 scope.decrementValue = function () {
                     if (scope.value <= (scope.isPercent ? 0 : opts.min)) {
                         return;
                     }
-                    scope.value -= opts.step;
+                    scope.value = +scope.value - opts.step;
                 };
+
                 scope.togglePercentageValue = function () {
                     scope.isPercent = !scope.isPercent;
                     if (scope.isPercent) {
@@ -89,7 +90,7 @@ module
                     scope.isMaxValue = !scope.canUp;
                     scope.isMinValue = !scope.canDown;
 
-                    if (!service.checkNumber(newValue) || newValue > max || newValue < min) {
+                    if ((!service.checkNumber(newValue) || newValue > max || newValue < min) && newValue !== '') {
                         //set oldValue or min value if oldValue isn't number when newValue isn't a number or newValue more than max or newValue less than min
                         scope.value = service.checkNumber(oldValue) ? oldValue : opts.min;
                     }
