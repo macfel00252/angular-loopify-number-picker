@@ -86,7 +86,7 @@ gulp.task('serve', function() {
 
     gulp.watch([
         'gulpfile.js',
-        'style/**/*.css'
+        'src/**/*.css'
     ], ['style']);
 
     gulp.watch([
