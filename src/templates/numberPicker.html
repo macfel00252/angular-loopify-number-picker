@@ -4,11 +4,11 @@
            class="btn btn-link" ng-disabled="!canUp"><span
                 class="glyphicon glyphicon-chevron-up"></span></a>
     </div>
-    <div class="loopify-frame-controls clearfixç">
+    <div class="loopify-frame-controls clearfix">
         <div class="loopify-frame-action pull-left">
             <input type="text" ng-model="value" class="form-control text-center"
                    ng-disabled="disabled"
-                   ng-readonly="enter" id="{{id}}">
+                   ng-readonly="enter" id="{{id}}" loopify-input-number-picker>
         </div>
         <div class="loopify-frame-percent-label pull-left" ng-if="label">
             <button type="button" class="btn btn-gray text-center loopify-toggle-percentage"

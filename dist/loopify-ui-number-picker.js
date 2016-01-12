@@ -63,12 +63,14 @@ module
                         return;
                     }
                     scope.value = +scope.value + opts.step;
+                    scope.$broadcast('change');
                 };
                 scope.decrementValue = function () {
                     if (scope.value <= (scope.isPercent ? 0 : opts.min)) {
                         return;
                     }
                     scope.value = +scope.value - opts.step;
+                    scope.$broadcast('change');
                 };
 
                 scope.togglePercentageValue = function () {
@@ -79,22 +81,6 @@ module
                         scope.percentLabel = scope.label;
                     }
                 };
-
-                //watch for disabled buttons
-                scope.$watch('value', function (newValue, oldValue) {
-                    var min = scope.isPercent ? 0 : opts.min,
-                        max = scope.isPercent ? 100 : opts.max;
-
-                    scope.canDown = newValue > min;
-                    scope.canUp = newValue < max;
-                    scope.isMaxValue = !scope.canUp;
-                    scope.isMinValue = !scope.canDown;
-
-                    if ((!service.checkNumber(newValue) || newValue > max || newValue < min) && newValue !== '') {
-                        //set oldValue or min value if oldValue isn't number when newValue isn't a number or newValue more than max or newValue less than min
-                        scope.value = service.checkNumber(oldValue) ? oldValue : opts.min;
-                    }
-                });
 
                 scope.$watch('percentLabel', function (newValue, oldValue) {
                     if (!newValue && !oldValue)
@@ -108,6 +94,34 @@ module
             },
             templateUrl: 'templates/numberPicker.html'
         });
+    }]);
+module
+    .directive('loopifyInputNumberPicker', ['numberPickerService', function (service) {
+        return {
+            link: function (scope, element) {
+                var fn = function () {
+                    var min = scope.isPercent ? 0 : +scope.min,
+                        max = scope.isPercent ? 100 : +scope.max;
+
+                    scope.canDown = scope.value > min;
+                    scope.canUp = scope.value < max;
+                    scope.isMaxValue = !scope.canUp;
+                    scope.isMinValue = !scope.canDown;
+
+                    if ((!service.checkNumber(scope.value) || scope.value > max || scope.value < min) && scope.value !== '') {
+                        //set oldValue or min value if oldValue isn't number when newValue isn't a number or newValue more than max or newValue less than min
+                        scope.value = service.checkNumber(scope.oldValue) ? scope.oldValue : scope.min;
+                    }
+                    scope.oldValue = scope.value;
+                };
+                element.on('change', function(){
+                    fn();
+                    scope.$apply();
+                });
+                scope.$on('change', fn);
+                fn();
+            }
+        };
     }]);
 module
     .service('numberPickerService', function () {

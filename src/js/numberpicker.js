@@ -57,12 +57,14 @@ module
                         return;
                     }
                     scope.value = +scope.value + opts.step;
+                    scope.$broadcast('change');
                 };
                 scope.decrementValue = function () {
                     if (scope.value <= (scope.isPercent ? 0 : opts.min)) {
                         return;
                     }
                     scope.value = +scope.value - opts.step;
+                    scope.$broadcast('change');
                 };
 
                 scope.togglePercentageValue = function () {
@@ -73,22 +75,6 @@ module
                         scope.percentLabel = scope.label;
                     }
                 };
-
-                //watch for disabled buttons
-                scope.$watch('value', function (newValue, oldValue) {
-                    var min = scope.isPercent ? 0 : opts.min,
-                        max = scope.isPercent ? 100 : opts.max;
-
-                    scope.canDown = newValue > min;
-                    scope.canUp = newValue < max;
-                    scope.isMaxValue = !scope.canUp;
-                    scope.isMinValue = !scope.canDown;
-
-                    if ((!service.checkNumber(newValue) || newValue > max || newValue < min) && newValue !== '') {
-                        //set oldValue or min value if oldValue isn't number when newValue isn't a number or newValue more than max or newValue less than min
-                        scope.value = service.checkNumber(oldValue) ? oldValue : opts.min;
-                    }
-                });
 
                 scope.$watch('percentLabel', function (newValue, oldValue) {
                     if (!newValue && !oldValue)
