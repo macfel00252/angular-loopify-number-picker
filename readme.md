@@ -43,6 +43,6 @@ angular.module('someModule', ['loopify.ui.numberPicker'])
 ```
 
 ### Demo
-[See demo](http://codepen.io/anon/pen/MKwQYE)
+[See demo](http://codepen.io/domovoj/pen/GoExVx)
 
 Author: yura.l@webcodium.com
