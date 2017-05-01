@@ -19,12 +19,20 @@
             'use strict';
             $scope.curValue = 10;
             $scope.curValue2 = 0;
+            $scope.tmp = $scope.curValue;
+            $scope.onChange = function (value){
+              console.log(value);
+              $scope.tmp = value;
+            }
         }]);
     </script>
 </head>
 <body ng-controller="demoController" style="padding: 10px 20px;">
 <h4>Number picker with percentage</h4>
 
+<p>
+  onChange: {{tmp}}
+</p>
 <p>Current value is
     <mark>{{curValue}}</mark>
     step is
@@ -37,7 +45,7 @@
     <mark>false</mark>
 </p>
 
-<loopify-number-picker value="curValue" step="5" min="0" max="50" label="hours" enter="false"
+<loopify-number-picker value="curValue" step="5" min="0" max="50" label="hours" enter="false" ng-model="curValue" ng-change="onChange(curValue)"
                        percent="true"></loopify-number-picker>
 <h4>Number picker without percentage</h4>
 

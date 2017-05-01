@@ -5,97 +5,6 @@ var module = angular.module('loopify.ui.numberPicker', [
     'loopify.ui.numberPicker.templates'
 ]);
 module
-    .directive('loopifyNumberPicker', ['numberPickerService', function (service) {
-        'use strict';
-
-        var config = {
-                min: 0,
-                max: Infinity,
-                step: 1,
-                enter: false,
-                percent: false,
-                label: undefined,
-                methodRound: undefined
-            },
-            base = {
-                restrict: 'E',
-                scope: {
-                    'value': '=',
-                    'min': '@',
-                    'max': '@',
-                    'step': '@',
-                    'enter': '@',
-                    'percent': '@',
-                    'label': '@',
-                    'methodRound': '@'
-                }
-            };
-
-        return angular.extend(base, {
-            //check if number
-            link: function (scope) {
-                var opts = service.assignExtend(scope, config);
-                if (!service.checkNumber([opts.min, opts.max, opts.step])) {
-                    throw new Error('some value: (min, max or step) is not a valid number');
-                }
-
-                if (scope.percent) {
-                    scope.percentLabel = '%';
-                    scope.isPercent = true;
-                }
-
-                scope.id = service.getId();
-
-                //transform string to number
-                service.transform(opts);
-
-                //change current value if min value is bigger
-                if (opts.min > scope.value) {
-                    scope.value = opts.min;
-                }
-                //change current value if max value is small
-                if (opts.max < scope.value) {
-                    scope.value = opts.max;
-                }
-
-                scope.incrementValue = function () {
-                    if (scope.value >= (scope.isPercent ? 100 : opts.max)) {
-                        return;
-                    }
-                    scope.value = +scope.value + opts.step;
-                    scope.$broadcast('change');
-                };
-                scope.decrementValue = function () {
-                    if (scope.value <= (scope.isPercent ? 0 : opts.min)) {
-                        return;
-                    }
-                    scope.value = +scope.value - opts.step;
-                    scope.$broadcast('change');
-                };
-
-                scope.togglePercentageValue = function () {
-                    scope.isPercent = !scope.isPercent;
-                    if (scope.isPercent) {
-                        scope.percentLabel = '%';
-                    } else {
-                        scope.percentLabel = scope.label;
-                    }
-                };
-
-                scope.$watch('percentLabel', function (newValue, oldValue) {
-                    if (!newValue && !oldValue)
-                        return false;
-                    if (scope.isPercent) {
-                        scope.value = scope.methodRound ? Math[scope.methodRound](scope.value / opts.max * 100) : scope.value / opts.max * 100;
-                    } else {
-                        scope.value = scope.methodRound ? Math[scope.methodRound](opts.max * scope.value / 100) : opts.max * scope.value / 100;
-                    }
-                });
-            },
-            templateUrl: 'templates/numberPicker.html'
-        });
-    }]);
-module
     .directive('loopifyInputNumberPicker', ['numberPickerService', function (service) {
         return {
             link: function (scope, element) {
@@ -123,6 +32,7 @@ module
             }
         };
     }]);
+
 module
     .service('numberPickerService', function () {
         'use strict';
@@ -181,5 +91,107 @@ module
             }
         };
     });
+module
+    .directive('loopifyNumberPicker', ['numberPickerService', function (service) {
+        'use strict';
+
+        var config = {
+                min: 0,
+                max: Infinity,
+                step: 1,
+                enter: false,
+                percent: false,
+                label: undefined,
+                methodRound: undefined
+            },
+            base = {
+                restrict: 'E',
+                scope: {
+                    'value': '=',
+                    'min': '@',
+                    'max': '@',
+                    'step': '@',
+                    'enter': '@',
+                    'percent': '@',
+                    'label': '@',
+                    'methodRound': '@'
+                }
+            };
+
+        return angular.extend(base, {
+            require: '?^ngModel',
+            //check if number
+            link: function (scope, element, attrs, ngModelCtrl) {
+                var opts = service.assignExtend(scope, config);
+                if (!service.checkNumber([opts.min, opts.max, opts.step])) {
+                    throw new Error('some value: (min, max or step) is not a valid number');
+                }
+
+                if (scope.percent) {
+                    scope.percentLabel = '%';
+                    scope.isPercent = true;
+                }
+
+                scope.id = service.getId();
+
+                //transform string to number
+                service.transform(opts);
+
+                //change current value if min value is bigger
+                if (opts.min > scope.value) {
+                    scope.value = opts.min;
+                }
+                //change current value if max value is small
+                if (opts.max < scope.value) {
+                    scope.value = opts.max;
+                }
+
+                scope.incrementValue = function () {
+                    if (scope.value >= (scope.isPercent ? 100 : opts.max)) {
+                        return;
+                    }
+                    scope.value = +scope.value + opts.step;
+                    scope.$broadcast('change');
+                    scope.change();
+                };
+                scope.decrementValue = function () {
+                    if (scope.value <= (scope.isPercent ? 0 : opts.min)) {
+                        return;
+                    }
+                    scope.value = +scope.value - opts.step;
+                    scope.$broadcast('change');
+                    scope.change();
+                };
+
+                scope.togglePercentageValue = function () {
+                    scope.isPercent = !scope.isPercent;
+                    if (scope.isPercent) {
+                        scope.percentLabel = '%';
+                    } else {
+                        scope.percentLabel = scope.label;
+                    }
+                };
+
+                scope.change = function () {
+                    if (ngModelCtrl) {
+                        console.log('change ' + scope.value);
+                        ngModelCtrl.$setViewValue(scope.value);
+                    }
+                };
+
+                scope.$watch('percentLabel', function (newValue, oldValue) {
+                    if (!newValue && !oldValue)
+                        return false;
+                    if (scope.isPercent) {
+                        scope.value = scope.methodRound ? Math[scope.methodRound](scope.value / opts.max * 100) : scope.value / opts.max * 100;
+                    } else {
+                        scope.value = scope.methodRound ? Math[scope.methodRound](opts.max * scope.value / 100) : opts.max * scope.value / 100;
+                    }
+                });
+            },
+            templateUrl: 'templates/numberPicker.html'
+        });
+    }]);
+
 
 })();

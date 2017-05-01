@@ -26,8 +26,9 @@ module
             };
 
         return angular.extend(base, {
+            require: '?^ngModel',
             //check if number
-            link: function (scope) {
+            link: function (scope, element, attrs, ngModelCtrl) {
                 var opts = service.assignExtend(scope, config);
                 if (!service.checkNumber([opts.min, opts.max, opts.step])) {
                     throw new Error('some value: (min, max or step) is not a valid number');
@@ -58,6 +59,7 @@ module
                     }
                     scope.value = +scope.value + opts.step;
                     scope.$broadcast('change');
+                    scope.change();
                 };
                 scope.decrementValue = function () {
                     if (scope.value <= (scope.isPercent ? 0 : opts.min)) {
@@ -65,6 +67,7 @@ module
                     }
                     scope.value = +scope.value - opts.step;
                     scope.$broadcast('change');
+                    scope.change();
                 };
 
                 scope.togglePercentageValue = function () {
@@ -73,6 +76,13 @@ module
                         scope.percentLabel = '%';
                     } else {
                         scope.percentLabel = scope.label;
+                    }
+                };
+
+                scope.change = function () {
+                    if (ngModelCtrl) {
+                        console.log('change ' + scope.value);
+                        ngModelCtrl.$setViewValue(scope.value);
                     }
                 };
 
